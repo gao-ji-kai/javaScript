@@ -108,7 +108,7 @@ let userinfo = {
 
 userinfo = new Proxy(userinfo, {
     ownKeys(target) {
-      return  Object.keys(target).filter(key => !key.startsWith('_'))
+        return Object.keys(target).filter(key => !key.startsWith('_'))
     }
 })
 
@@ -117,3 +117,98 @@ for (let key in userinfo) {
 }
 
 console.log(Object.keys(userinfo));//['username', 'age']
+
+
+let user = {
+    name: 'laoliu',
+    age: 11,
+    _password: '*****'
+}
+//用proxy防止对下划线属性的任何访问 不可读取 不可设置 不可删除  不可循环遍历读取
+user = new Proxy(user, {
+    get(target, prop) {
+        if (prop.startsWith('_')) {
+            throw new Error('不可访问')
+        } else {
+            return target[prop]
+        }
+    },
+    set(target, prop, val) {
+        if (prop.startsWith('_')) {
+            throw new Error('不可访问')
+        } else {
+            target[prop] = val
+            return true
+        }
+    },
+    deleteProperty(target, prop) {//拦截删除操作
+        if (prop.startsWith('_')) {
+            throw new Error('不可删除')
+
+        } else {
+            delete target[prop]
+            return true
+        }
+    },
+    ownKeys(target) {
+        return Object.keys(target).filter(key => !key.startsWith('_'))
+    }
+})
+// console.log(user.age);
+// console.log(user._password);//抛错
+// user.age = 19
+// console.log(user.age);
+// try {
+//     user._password = '111'//Uncaught Error: 不可访问
+
+// } catch (e) {
+//     console.log(e.message);//不可访问
+// }
+
+try {
+    delete user._password
+} catch (e) {
+    console.log(e.message);//不可删除
+}
+//console.log(user.age);
+
+
+for (let key in user) {
+    console.log(key);
+}
+
+
+
+//apply  用于拦截函数调用
+let sum = (...args) => {
+    let num = 0
+    args.forEach(item => {
+        num += item
+    })
+    return num
+}
+
+sum = new Proxy(sum, {
+    apply(target, ctx, args) {//对应三个参数  第一个参数  拦截的目标  第二个参数 上下文  第三个参数   对应目标参数的数组
+        return target(...args) * 2
+    }
+
+})
+console.log(sum(1, 2));//6
+console.log(sum.call(null,1,2,3));//第一个参数是改变this指向 第二个是传递的参数
+console.log(sum.apply(null, [1, 2, 3]));//第二个参数是数组   12
+
+
+
+//construct  拦截new命令
+let User = class {
+    constructor(name) {
+        this.name = name;
+    }
+}
+User = new Proxy(User, {
+    construct(target,args,newTarget) {//必须返回一个对象才可以
+        return new target(...args)
+    }
+})
+console.log(new User('gjk'));//User {name: 'gjk'}
