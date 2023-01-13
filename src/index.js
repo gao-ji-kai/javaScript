@@ -3,4 +3,4 @@
 
 //import './解构赋值.js'
 //import './数组的扩展.js'
-import './正则表达式扩展.js'
+import './Proxy代理.js'
