@@ -3,4 +3,4 @@
 
 //import './解构赋值.js'
 //import './数组的扩展.js'
-import './Proxy代理.js'
+import './同步与异步.js'
