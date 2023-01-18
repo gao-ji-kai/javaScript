@@ -197,3 +197,6 @@ getPromise('/static/aa.json')
     }).catch(err => {
         console.log(err);
     })
+
+
+
