@@ -29,7 +29,7 @@ console.log(Number.isNaN(17));
 
 
 
-//    Number.parseInt转换成整数  Number.parseFloat转换成浮点型
+//Number.parseInt转换成整数  Number.parseFloat转换成浮点型
 console.log(Number.parseInt(3.3));//3
 console.log(Number.parseFloat(3));
 
