@@ -3,4 +3,4 @@
 
 //import './解构赋值.js'
 //import './数组的扩展.js'
-import './字符串的扩展.js'
+import './异步迭代.js'
