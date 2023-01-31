@@ -3,4 +3,4 @@
 
 //import './解构赋值.js'
 //import './数组的扩展.js'
-import './Rest&spread.js'
+import './Promise扩展.js'
